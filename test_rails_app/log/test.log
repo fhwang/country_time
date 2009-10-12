@@ -1,0 +1,81 @@
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:50:08) [GET]
+Rendering users/new
+Completed in 107ms (View: 104, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:50:08) [GET]
+Rendering users/new
+Completed in 5ms (View: 5, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:51:02) [GET]
+Rendering users/new
+Completed in 12ms (View: 11, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:51:02) [GET]
+Rendering users/new
+Completed in 5ms (View: 5, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:55:47) [GET]
+Rendering users/new
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:55:47) [GET]
+Rendering users/new
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:57:27) [GET]
+Rendering users/new
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:57:27) [GET]
+Rendering users/new
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:59:13) [GET]
+Rendering users/new
+Completed in 44ms (View: 42, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:59:14) [GET]
+Rendering users/new
+Completed in 19ms (View: 19, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:59:33) [GET]
+Rendering users/new
+Completed in 26ms (View: 25, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:59:50) [GET]
+Rendering users/new
+Completed in 27ms (View: 25, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 16:59:58) [GET]
+Rendering users/new
+Completed in 27ms (View: 25, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 17:06:57) [GET]
+Rendering users/new
+Completed in 45ms (View: 42, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 17:06:57) [GET]
+Rendering users/new
+Completed in 18ms (View: 18, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 17:07:34) [GET]
+Rendering users/new
+Completed in 27ms (View: 25, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 17:07:34) [GET]
+Rendering users/new
+Completed in 19ms (View: 19, DB: 0) | 200 OK [http://test.host/users/new]
