@@ -2,5 +2,5 @@ CountryTime
 =============
 A souped-up version of the country_select helper that was originally in Rails core and then extracted into its own plugin. Please note that this will probably not be compatible with the country_select plugin itself.
 
-Originally copyright (c) 2008 Michael Koziarski, released under the MIT license. Further enhancements by Francis Hwang.
+CountryTime uses code from the country_select helper by Michael Koziarski, and the country_codes plugin by James Brooks. Further enhancements by Francis Hwang.
 

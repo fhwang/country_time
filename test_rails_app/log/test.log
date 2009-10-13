@@ -79,3 +79,42 @@ Completed in 27ms (View: 25, DB: 0) | 200 OK [http://test.host/users/new]
 Processing UsersController#new (for 0.0.0.0 at 2009-10-12 17:07:34) [GET]
 Rendering users/new
 Completed in 19ms (View: 19, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 18:26:29) [GET]
+Rendering users/new
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 18:26:55) [GET]
+Rendering users/new
+Completed in 26ms (View: 25, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 18:27:00) [GET]
+Rendering users/new
+Completed in 26ms (View: 24, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 18:27:00) [GET]
+Rendering users/new
+Completed in 18ms (View: 18, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 18:27:04) [GET]
+Rendering users/new
+Completed in 34ms (View: 31, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-12 18:27:04) [GET]
+Rendering users/new
+Completed in 19ms (View: 19, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-13 00:32:58) [GET]
+Rendering users/new
+Completed in 64ms (View: 61, DB: 0) | 200 OK [http://test.host/users/new]
+
+
+Processing UsersController#new (for 0.0.0.0 at 2009-10-13 00:32:58) [GET]
+Rendering users/new
+Completed in 23ms (View: 23, DB: 0) | 200 OK [http://test.host/users/new]
