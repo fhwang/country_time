@@ -14,26 +14,24 @@ module ActionView
       def country_options_for_select(selected = nil, priority_countries = nil)
         country_options = ""
         value_type = :a3
-        CountryTime::CountryCodes.load_countries_from_yaml
         priority_countries ||= CountryTime.high_priority_countries
 
         if priority_countries
           priority_country_options = priority_countries.map { |c_value|
-            cc = CountryTime::CountryCodes.send(
+            country = CountryTime::Country.send(
               "find_by_#{value_type}", c_value
             )
-            [cc[:name], cc[value_type]]
+            [country.name, country.send(value_type)]
           }
           country_options += options_for_select(
             priority_country_options, selected
           )
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
-        all_countries =
-            CountryTime::CountryCodes.instance_variable_get(:@countries)['name'].values
-        sorted_countries = all_countries.sort_by { |country| country[:name] }
+        all_countries = CountryTime::Country.all
+        sorted_countries = all_countries.sort_by { |country| country.name }
         all_country_options = sorted_countries.map { |country|
-          [country[:name], country[value_type]]
+          [country.name, country.send(value_type)]
         }
         country_options << options_for_select(
           all_country_options, selected
@@ -67,7 +65,9 @@ end
 module CountryTime
   mattr_accessor :high_priority_countries
   
-  module CountryCodes # :nodoc:
+  class Country
+    @@countries_hashes = nil
+    
     def self.method_missing(name, *args)
       if match = /find_([^_]*)_by_([^_]*)/.match(name.to_s)
         raise "1 argument expected, #{args.size} provided." unless args.size == 1
@@ -75,7 +75,7 @@ module CountryTime
         required = match[1]
         request  = match[2]
         if valid_attributes.include?(request) && valid_attributes.include?(required)
-          @countries[request][args[0].to_s.downcase][required.to_sym] || nil rescue nil
+          countries_hashes[request][args[0].to_s.downcase][required.to_sym] || nil rescue nil
         else
           raise "#{request} is not a valid attribute, valid attributes for find_*_by_* are: #{valid_attributes.join(', ')}."
         end
@@ -83,54 +83,50 @@ module CountryTime
       elsif match = /find_by_(.*)/.match(name.to_s)
         raise "1 argument expected, #{args.size} provided." unless args.size == 1
         
-        request = match[1]     
+        request = match[1]
         if valid_attributes.include?(request)  
-          @countries[request][args[0].to_s.downcase] || nil_countries_hash
+          countries_hashes[request][args[0].to_s.upcase]
         else
           raise "#{request} is not a valid attribute, valid attributes for find_by_* are: #{valid_attributes.join(', ')}."
         end
         
       else
-        raise NoMethodError.new("Method '#{name}' not supported")
+        super
       end
     end
     
-    def self.countries_for_select(*args)
-      # Ensure that each of the arguments is a valid attribute
-      args.each do |arg|
-        unless valid_attributes.include?(arg)
-          raise "#{arg} is not a valid attribute, valid attributes are: #{valid_attributes.join(', ')}"
-        end
-      end
-      
-      # Build and return the desired array
-      @countries[@countries.keys.first].map do |index, country|
-        args.map { |a| country[a.to_sym] }
-      end
+    def self.all
+      countries_hashes['name'].values
+    end
+    
+    def self.countries_hashes
+      load_all unless @@countries_hashes
+      @@countries_hashes
     end
     
     def self.valid_attributes
-      @countries.keys
+      countries_hashes.keys
     end
     
-    def self.nil_countries_hash
-      hash = {}
-      valid_attributes.map { |attribute| hash[attribute.to_sym] = nil }
-      hash
-    end
-    
-    def self.load_countries_from_yaml
-      # Load countries
-      countries_from_file = YAML::load(
+    def self.load_all
+      records = YAML::load(
         File.open("#{File.dirname(__FILE__)}/countries.yml")
       )
-      
-      # Build indexes for each attribute
-      @countries = {}    
-      countries_from_file.first.keys.each do |key|
-        @countries[key.to_s] = {}
-        countries_from_file.each { |country| @countries[key.to_s][country[key].to_s.downcase] = country }
+      @@countries_hashes ||= Hash.new { |h,k| h[k] = {} }
+      records.each do |record|
+        country = Country.new(
+          record[:name], record[:a2], record[:a3], record[:numeric]
+        )
+        %w(name a2 a3 numeric).each do |field|
+          @@countries_hashes[field][country.send(field)] = country
+        end
       end
+    end
+    
+    attr_accessor :name, :a2, :a3, :numeric
+    
+    def initialize(name, a2, a3, numeric)
+      @name, @a2, @a3, @numeric = name, a2, a3, numeric
     end
   end
 end
