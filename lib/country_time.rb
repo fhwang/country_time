@@ -23,14 +23,8 @@ module ActionView
           )
           country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
         end
-          
-        all_countries = CountryTime::Country.all
-        sorted_countries = all_countries.sort_by { |country| country.name }
-        all_country_options = sorted_countries.map { |country|
-          [country.name, country.send(value_type)]
-        }
         country_options << options_for_select(
-          all_country_options, selected
+          CountryTime.unprioritized_options_for_select(value_type), selected
         )
         country_options
       end
@@ -60,6 +54,12 @@ end
 
 module CountryTime
   mattr_accessor :high_priority_countries
+  
+  def self.unprioritized_options_for_select(value_type)
+    all_countries = Country.all
+    sorted_countries = all_countries.sort_by { |country| country.name }
+    sorted_countries.map { |country| [country.name, country.send(value_type)] }
+  end
   
   def self.priority_options_for_select(priority_countries, value_type)
     priority_countries ||= CountryTime.high_priority_countries
