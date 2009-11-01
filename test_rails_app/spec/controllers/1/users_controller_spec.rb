@@ -29,5 +29,11 @@ describe UsersController do
     it 'should allow us to skip some countries' do
       response.should_not have_tag('option[value=?]', 'PRK')
     end
+    
+    it 'should let you customize label text' do
+      response.should have_tag(
+        'option[disabled=disabled]', :text => "----- Choose one -----"
+      )
+    end
   end
 end

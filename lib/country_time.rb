@@ -21,7 +21,7 @@ module ActionView
           country_options += options_for_select(
             priority_country_options, selected
           )
-          country_options += "<option value=\"\" disabled=\"disabled\">-------------</option>\n"
+          country_options += "<option value=\"\" disabled=\"disabled\">#{CountryTime.label_text}</option>\n"
         end
         country_options << options_for_select(
           CountryTime.unprioritized_options_for_select(value_type), selected
@@ -54,6 +54,9 @@ end
 
 module CountryTime
   mattr_accessor :high_priority_countries
+  
+  mattr_accessor :label_text
+  self.label_text = '-------------'
   
   mattr_accessor :value_type
   self.value_type = :a3
