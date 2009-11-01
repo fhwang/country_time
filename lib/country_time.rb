@@ -13,7 +13,7 @@ module ActionView
       # NOTE: Only the option tags are returned, you have to wrap this call in a regular HTML select tag.
       def country_options_for_select(selected = nil, priority_countries = nil)
         country_options = ""
-        value_type = :a3
+        value_type = CountryTime.value_type
         priority_country_options = CountryTime.priority_options_for_select(
           priority_countries, value_type
         )
@@ -54,6 +54,9 @@ end
 
 module CountryTime
   mattr_accessor :high_priority_countries
+  mattr_accessor :value_type
+  
+  self.value_type = :a3
   
   def self.countries
     @@country_configs ||= Hash.new { |h,k| h[k] = CountryConfig.new(k) }

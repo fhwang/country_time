@@ -43,6 +43,6 @@ end
 $: << 'vendor/plugins/country_time/lib'
 require 'country_time'
 
-COUNTRY_TIME_CONFIG = 1 unless defined? COUNTRY_TIME_CONFIG
+COUNTRY_TIME_CONFIG = ENV['COUNTRY_TIME_CONFIG'] or raise
 require "./config/country_time/#{COUNTRY_TIME_CONFIG}.rb"
 
