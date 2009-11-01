@@ -149,11 +149,10 @@ module CountryTime
         a3 = record[:a3]
         unless CountryTime.skipped.include?(a2) or 
                CountryTime.skipped.include?(a3)
-          if CountryTime.countries[a2].name
-            name = CountryTime.countries[a2].name
-          elsif CountryTime.countries[a3].name
-            name = CountryTime.countries[a3].name
-          end
+          names = [a2, a3, name].map { |lookup|
+            CountryTime.countries[lookup].name
+          }.compact
+          name = names.first unless names.empty?
           country = Country.new name, a2, a3, record[:numeric]
           ATTRIBUTES.each do |field|
             @@countries_hashes[field][country.send(field)] = country

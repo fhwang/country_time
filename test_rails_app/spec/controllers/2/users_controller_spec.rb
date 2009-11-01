@@ -19,5 +19,11 @@ describe UsersController do
         with_tag 'option[value=?]', 'Scotland', :text => 'Scotland'
       end
     end
+    
+    it 'should let you rename countries by name' do
+      response.should have_tag('select') do
+        with_tag 'option[value=?]', 'Iran', :text => 'Iran'
+      end
+    end
   end
 end
