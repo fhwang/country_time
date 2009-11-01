@@ -54,9 +54,15 @@ end
 
 module CountryTime
   mattr_accessor :high_priority_countries
-  mattr_accessor :value_type
   
+  mattr_accessor :value_type
   self.value_type = :a3
+  
+  @@added = []
+  mattr_reader :added
+  def self.add(*added)
+    @@added.concat added
+  end
   
   def self.countries
     @@country_configs ||= Hash.new { |h,k| h[k] = CountryConfig.new(k) }
@@ -72,8 +78,16 @@ module CountryTime
   
   def self.unprioritized_options_for_select(value_type)
     all_countries = Country.all
-    sorted_countries = all_countries.sort_by { |country| country.name }
-    sorted_countries.map { |country| [country.name, country.send(value_type)] }
+    if value_type == :name and !self.added.empty?
+      names = all_countries.map &:name
+      names.concat self.added
+      names.sort.map { |name| [name, name] }
+    else
+      sorted_countries = all_countries.sort_by { |country| country.name }
+      sorted_countries.map { |country|
+        [country.name, country.send(value_type)]
+      }
+    end
   end
   
   def self.priority_options_for_select(priority_countries, value_type)

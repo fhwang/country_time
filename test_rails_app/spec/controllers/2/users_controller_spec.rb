@@ -13,5 +13,11 @@ describe UsersController do
         with_tag 'option[value=?]', 'Afghanistan', :text => 'Afghanistan'
       end
     end
+    
+    it 'should show an added country' do
+      response.should have_tag('select') do
+        with_tag 'option[value=?]', 'Scotland', :text => 'Scotland'
+      end
+    end
   end
 end
