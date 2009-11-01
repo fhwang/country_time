@@ -60,6 +60,13 @@ module CountryTime
     @@country_configs
   end
   
+  @@skipped = []
+  mattr_reader :skipped
+  
+  def self.skip(*skipped)
+    @@skipped.concat skipped
+  end
+  
   def self.unprioritized_options_for_select(value_type)
     all_countries = Country.all
     sorted_countries = all_countries.sort_by { |country| country.name }
@@ -123,14 +130,17 @@ module CountryTime
         name = record[:name]
         a2 = record[:a2]
         a3 = record[:a3]
-        if CountryTime.countries[a2].name
-          name = CountryTime.countries[a2].name
-        elsif CountryTime.countries[a3].name
-          name = CountryTime.countries[a3].name
-        end
-        country = Country.new name, a2, a3, record[:numeric]
-        ATTRIBUTES.each do |field|
-          @@countries_hashes[field][country.send(field)] = country
+        unless CountryTime.skipped.include?(a2) or 
+               CountryTime.skipped.include?(a3)
+          if CountryTime.countries[a2].name
+            name = CountryTime.countries[a2].name
+          elsif CountryTime.countries[a3].name
+            name = CountryTime.countries[a3].name
+          end
+          country = Country.new name, a2, a3, record[:numeric]
+          ATTRIBUTES.each do |field|
+            @@countries_hashes[field][country.send(field)] = country
+          end
         end
       end
     end
