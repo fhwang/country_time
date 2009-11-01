@@ -3,15 +3,20 @@ module ActionView
   module Helpers
     module FormOptionsHelper
       # Return select and option tags for the given object and method, using country_options_for_select to generate the list of option tags.
-      def country_select(object, method, priority_countries = nil, options = {}, html_options = {})
-        InstanceTag.new(object, method, self, options.delete(:object)).to_country_select_tag(priority_countries, options, html_options)
+      def country_select(object, method, options = {}, html_options = {})
+        InstanceTag.new(
+          object, method, self, options.delete(:object)
+        ).to_country_select_tag(options, html_options)
       end
+      
       # Returns a string of option tags for pretty much any country in the world. Supply a country name as +selected+ to
       # have it marked as the selected option tag. You can also supply an array of countries as +priority_countries+, so
       # that they will be listed above the rest of the (long) list.
       #
       # NOTE: Only the option tags are returned, you have to wrap this call in a regular HTML select tag.
-      def country_options_for_select(selected = nil, priority_countries = nil)
+      def country_options_for_select(
+        selected = nil, priority_countries = nil, skipped_countries = nil
+      )
         country_options = ""
         value_type = CountryTime.value_type
         priority_country_options = CountryTime.priority_options_for_select(
@@ -24,20 +29,27 @@ module ActionView
           country_options += "<option value=\"\" disabled=\"disabled\">#{CountryTime.label_text}</option>\n"
         end
         country_options << options_for_select(
-          CountryTime.unprioritized_options_for_select(value_type), selected
+          CountryTime.unprioritized_options_for_select(
+            value_type, skipped_countries
+          ),
+          selected
         )
         country_options
       end
     end
     
     class InstanceTag
-      def to_country_select_tag(priority_countries, options, html_options)
+      def to_country_select_tag(options, html_options)
         html_options = html_options.stringify_keys
         add_default_name_and_id(html_options)
         value = value(object)
+        priority_countries = options.delete :priority_countries
+        skipped_countries = options.delete :skip
         content_tag("select",
           add_options(
-            country_options_for_select(value, priority_countries),
+            country_options_for_select(
+              value, priority_countries, skipped_countries
+            ),
             options, value
           ), html_options
         )
@@ -45,8 +57,10 @@ module ActionView
     end
     
     class FormBuilder
-      def country_select(method, priority_countries = nil, options = {}, html_options = {})
-        @template.country_select(@object_name, method, priority_countries, options.merge(:object => @object), html_options)
+      def country_select(method, options = {}, html_options = {})
+        @template.country_select(
+          @object_name, method, options.merge(:object => @object), html_options
+        )
       end
     end
   end
@@ -79,9 +93,9 @@ module CountryTime
     @@skipped.concat skipped
   end
   
-  def self.unprioritized_options_for_select(value_type)
+  def self.unprioritized_options_for_select(value_type, skipped_countries = nil)
     all_countries = Country.all
-    if value_type == :name and !self.added.empty?
+    unskipped = if value_type == :name and !self.added.empty?
       names = all_countries.map &:name
       names.concat self.added
       names.sort.map { |name| [name, name] }
@@ -91,6 +105,8 @@ module CountryTime
         [country.name, country.send(value_type)]
       }
     end
+    skipped_countries ||= []
+    unskipped.reject { |tuple| skipped_countries.include?(tuple.last) }
   end
   
   def self.priority_options_for_select(priority_countries, value_type)

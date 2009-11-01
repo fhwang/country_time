@@ -1,3 +1,7 @@
 <% form_for(@user, :url => {:action => 'update'}) do |f| %>
-  <%= f.country_select(:country) %>
+  <% if ENV['COUNTRY_TIME_CONFIG'] == '2' %>
+    <%= f.country_select(:country, :skip => 'Syrian Arab Republic') %>
+  <% else %>
+    <%= f.country_select(:country) %>
+  <% end %>
 <% end %>

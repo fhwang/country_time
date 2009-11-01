@@ -25,5 +25,9 @@ describe UsersController do
         with_tag 'option[value=?]', 'Iran', :text => 'Iran'
       end
     end
+    
+    it 'should let you skip a country in the select call' do
+      response.should_not have_tag('option[value=?]', 'Syrian Arab Republic')
+    end
   end
 end
