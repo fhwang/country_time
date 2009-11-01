@@ -43,3 +43,4 @@ end
 $: << 'vendor/plugins/country_time/lib'
 require 'country_time'
 CountryTime.high_priority_countries = 'USA'
+CountryTime.countries['TW'].name = 'Taiwan'

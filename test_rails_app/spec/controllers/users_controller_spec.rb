@@ -19,5 +19,11 @@ describe UsersController do
         with_tag 'option[value=?]:first-child', 'USA'
       end
     end
+    
+    it 'should allow name customization of countries' do
+      response.should have_tag('select') do
+        with_tag 'option[value=?]', 'TWN', :text => 'Taiwan'
+      end
+    end
   end
 end

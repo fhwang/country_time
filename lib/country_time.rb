@@ -55,6 +55,11 @@ end
 module CountryTime
   mattr_accessor :high_priority_countries
   
+  def self.countries
+    @@country_configs ||= Hash.new { |h,k| h[k] = CountryConfig.new(k) }
+    @@country_configs
+  end
+  
   def self.unprioritized_options_for_select(value_type)
     all_countries = Country.all
     sorted_countries = all_countries.sort_by { |country| country.name }
@@ -115,9 +120,15 @@ module CountryTime
       )
       @@countries_hashes ||= Hash.new { |h,k| h[k] = {} }
       records.each do |record|
-        country = Country.new(
-          record[:name], record[:a2], record[:a3], record[:numeric]
-        )
+        name = record[:name]
+        a2 = record[:a2]
+        a3 = record[:a3]
+        if CountryTime.countries[a2].name
+          name = CountryTime.countries[a2].name
+        elsif CountryTime.countries[a3].name
+          name = CountryTime.countries[a3].name
+        end
+        country = Country.new name, a2, a3, record[:numeric]
         ATTRIBUTES.each do |field|
           @@countries_hashes[field][country.send(field)] = country
         end
@@ -130,6 +141,14 @@ module CountryTime
     
     def initialize(name, a2, a3, numeric)
       @name, @a2, @a3, @numeric = name, a2, a3, numeric
+    end
+  end
+  
+  class CountryConfig
+    attr_accessor :name
+    
+    def initialize(code)
+      @code = code
     end
   end
 end
