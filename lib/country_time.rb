@@ -86,6 +86,12 @@ module CountryTime
     @@country_configs
   end
   
+  def self.rename_countries(rename_hash)
+    rename_hash.each do |code, name|
+      self.countries[code].name = name
+    end
+  end
+  
   @@skipped = []
   mattr_reader :skipped
   
