@@ -140,10 +140,10 @@ module CountryTime
     def self.method_missing(name, *args)
       if match = /find_([^_]*)_by_([^_]*)/.match(name.to_s)
         raise "1 argument expected, #{args.size} provided." unless args.size == 1
-        required = match[1]
+        required = match[1].to_sym
         request  = match[2].to_sym
         if ATTRIBUTES.include?(request) && ATTRIBUTES.include?(required)
-          countries_hashes[request][args[0].to_s.downcase][required.to_sym] || nil rescue nil
+          countries_hashes[request][args[0]].send(required) rescue nil
         else
           raise "#{request} is not a valid attribute, valid attributes for find_*_by_* are: #{ATTRIBUTES.join(', ')}."
         end
